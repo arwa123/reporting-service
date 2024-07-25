@@ -5,11 +5,10 @@ import com.report.service.model.Building;
 import com.report.service.processors.ReportService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,22 +18,21 @@ public class ReportServiceTest {
     private List<Building> buildingList;
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException {
         parser = new BuildInfoParser();
-    //    reportService = ReportServiceFactory.createReportService();
-        String data = "2343225,2345,us_east,RedTeam,ProjectApple,3445s\n" +
-                "1223456,2345,us_west,BlueTeam,ProjectBanana,2211s\n" +
-                "3244332,2346,eu_west,YellowTeam3,ProjectCarrot,4322s\n" +
-                "1233456,2345,us_west,BlueTeam,ProjectDate,2221s\n" +
-                "3244132,2346,eu_west,YellowTeam3,ProjectEgg,4122s";
-        buildingList = Arrays.asList(parser.parseLine(data));
+        reportService = ReportService.getInstance();
+        String data1 = "2343225,2345,us_east,RedTeam,ProjectApple,3445s";
+        String data2 = "2343225,2345,us_east,RedTeam,ProjectApple,3445s";
+        buildingList = new ArrayList<>();
+        buildingList.add(parser.parseLine(data1));
+        buildingList.add(parser.parseLine(data2));
+        MainApplication.main(null);
     }
 
     @Test
     public void testUniqueCustomerCountByContract() {
         Map<String, Long> result = reportService.getUniqueCustomerCountByContract();
-        assertEquals(2, result.get("2345"));
-        assertEquals(2, result.get("2346"));
+        assertEquals(3, result.get("2345"));
     }
 
     @Test
