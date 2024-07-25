@@ -1,6 +1,6 @@
-package com.report.service;
+package com.report.service.model;
 
-public class BuildInfo {
+public class Building {
     private final String customerId;
     private final String contractId;
     private final String geoZone;
@@ -8,7 +8,7 @@ public class BuildInfo {
     private final String projectCode;
     private final int buildDuration;
 
-    private BuildInfo(Builder builder) {
+    private Building(Builder builder) {
         this.customerId = builder.customerId;
         this.contractId = builder.contractId;
         this.geoZone = builder.geoZone;
@@ -62,8 +62,8 @@ public class BuildInfo {
             return this;
         }
 
-        public BuildInfo build() {
-            return new BuildInfo(this);
+        public Building build() {
+            return new Building(this);
         }
     }
 }

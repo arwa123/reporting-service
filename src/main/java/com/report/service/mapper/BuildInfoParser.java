@@ -1,9 +1,11 @@
-package com.report.service;
+package com.report.service.mapper;
+
+import com.report.service.model.Building;
 
 public class BuildInfoParser {
-    public BuildInfo parseLine(String line) {
+    public Building parseLine(String line) {
         String[] parts = line.split(",");
-        return new BuildInfo.Builder()
+        return new Building.Builder()
                 .withCustomerId(parts[0])
                 .withContractId(parts[1])
                 .withGeoZone(parts[2])

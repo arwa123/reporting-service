@@ -1,5 +1,8 @@
 package com.report.service;
 
+import com.report.service.processors.BatchProcessor;
+import com.report.service.processors.ReportService;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;

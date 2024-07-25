@@ -1,4 +1,8 @@
-package com.report.service;
+package com.report.service.processors;
+
+import com.report.service.generators.ReportGenerator;
+import com.report.service.generators.ReportGeneratorFactory;
+import com.report.service.model.Building;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,11 +29,11 @@ public class ReportService {
         return instance;
     }
 
-    public void processBatch(List<BuildInfo> batch) {
-        for (BuildInfo buildInfo : batch) {
-            customerCountByContract.computeIfAbsent(buildInfo.getContractId(), k -> ConcurrentHashMap.newKeySet()).add(buildInfo.getCustomerId());
-            customerCountByGeoZone.computeIfAbsent(buildInfo.getGeoZone(), k -> ConcurrentHashMap.newKeySet()).add(buildInfo.getCustomerId());
-            buildDurationByGeoZone.computeIfAbsent(buildInfo.getGeoZone(), k -> Collections.synchronizedList(new ArrayList<>())).add(buildInfo.getBuildDuration());
+    public void processBatch(List<Building> batch) {
+        for (Building building : batch) {
+            customerCountByContract.computeIfAbsent(building.getContractId(), k -> ConcurrentHashMap.newKeySet()).add(building.getCustomerId());
+            customerCountByGeoZone.computeIfAbsent(building.getGeoZone(), k -> ConcurrentHashMap.newKeySet()).add(building.getCustomerId());
+            buildDurationByGeoZone.computeIfAbsent(building.getGeoZone(), k -> Collections.synchronizedList(new ArrayList<>())).add(building.getBuildDuration());
         }
     }
 

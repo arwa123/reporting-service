@@ -1,4 +1,4 @@
-package com.report.service;
+package com.report.service.generators;
 
 public class ReportGeneratorFactory {
     public static ReportGenerator getReportGenerator(String format) {

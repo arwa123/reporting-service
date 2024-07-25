@@ -1,4 +1,4 @@
-package com.report.service;
+package com.report.service.generators;
 
 import java.util.Map;
 

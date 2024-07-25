@@ -1,4 +1,7 @@
-package com.report.service;
+package com.report.service.processors;
+import com.report.service.mapper.BuildInfoParser;
+import com.report.service.model.Building;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,18 +11,18 @@ public class BatchProcessor {
         private static final int BATCH_SIZE = 10;
 
         public interface BatchHandler {
-            void handleBatch(List<BuildInfo> batch);
+            void handleBatch(List<Building> batch);
         }
 
         public void processFile(String filePath, BatchHandler handler) throws IOException {
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
                 String line;
-                List<BuildInfo> batch = new ArrayList<>();
+                List<Building> batch = new ArrayList<>();
                 BuildInfoParser parser = new BuildInfoParser();
 
                 while ((line = reader.readLine()) != null) {
-                    BuildInfo buildInfo = parser.parseLine(line);
-                    batch.add(buildInfo);
+                    Building building = parser.parseLine(line);
+                    batch.add(building);
 
                     if (batch.size() >= BATCH_SIZE) {
                         handler.handleBatch(batch);

@@ -1,5 +1,8 @@
 package com.report.service;
 
+import com.report.service.mapper.BuildInfoParser;
+import com.report.service.model.Building;
+import com.report.service.processors.ReportService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ReportServiceTest {
     private BuildInfoParser parser;
     private ReportService reportService;
-    private List<BuildInfo> buildInfoList;
+    private List<Building> buildingList;
 
     @BeforeEach
     public void setup() {
@@ -24,7 +27,7 @@ public class ReportServiceTest {
                 "3244332,2346,eu_west,YellowTeam3,ProjectCarrot,4322s\n" +
                 "1233456,2345,us_west,BlueTeam,ProjectDate,2221s\n" +
                 "3244132,2346,eu_west,YellowTeam3,ProjectEgg,4122s";
-        buildInfoList = Arrays.asList(parser.parseLine(data));
+        buildingList = Arrays.asList(parser.parseLine(data));
     }
 
     @Test
