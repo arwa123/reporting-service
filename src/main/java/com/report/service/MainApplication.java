@@ -49,7 +49,7 @@ public class MainApplication {
         System.out.println("Unique Customers by GeoZone: " + uniqueCustomersByGeoZone);
 
         String outputPath = "/Users/asaify/Documents/my-workspace/reporting-service/src/main/resources/";
-        reportService.generateReport("text",uniqueCustomerCountByContract,outputPath);
+        reportService.generateReport("text",uniqueCustomerCountByGeoZone,outputPath);
     }
 
 }

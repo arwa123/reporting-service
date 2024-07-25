@@ -1,0 +1,6 @@
+Report
+--------------
+GEO-ZONE: Customers
+eu_west: 2
+us_west: 2
+us_east: 1
