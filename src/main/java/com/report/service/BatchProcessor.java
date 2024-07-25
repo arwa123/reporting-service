@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 public class BatchProcessor {
-        private static final int BATCH_SIZE = 1000;
+        private static final int BATCH_SIZE = 10;
 
         public interface BatchHandler {
             void handleBatch(List<BuildInfo> batch);

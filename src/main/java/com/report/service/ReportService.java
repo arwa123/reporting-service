@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 public class ReportService {
     private static ReportService instance;
+
     private ConcurrentMap<String, Set<String>> customerCountByContract = new ConcurrentHashMap<>();
     private ConcurrentMap<String, Set<String>> customerCountByGeoZone = new ConcurrentHashMap<>();
     private ConcurrentMap<String, List<Integer>> buildDurationByGeoZone = new ConcurrentHashMap<>();

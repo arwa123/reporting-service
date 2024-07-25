@@ -6,7 +6,6 @@ This application processes the input data and generates various reports.
 ### Prerequisites
 
 - Java
-- Maven
 
 ### Steps
 
