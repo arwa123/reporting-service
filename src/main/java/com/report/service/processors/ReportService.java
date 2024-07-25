@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 
 public class ReportService {
     private static ReportService instance;
+    private static final String FILE_OUT_PATH = "/Users/asaify/Documents/my-workspace/reporting-service/src/main/resources/";
 
     private ConcurrentMap<String, Set<String>> customerCountByContract = new ConcurrentHashMap<>();
     private ConcurrentMap<String, Set<String>> customerCountByGeoZone = new ConcurrentHashMap<>();
     private ConcurrentMap<String, List<Integer>> buildDurationByGeoZone = new ConcurrentHashMap<>();
 
-    private ReportService() {}
+    private ReportService() {
+    }
 
     public static ReportService getInstance() {
         if (instance == null) {
@@ -57,8 +59,18 @@ public class ReportService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public void generateReport(String format, Map<String, ?> data, String outputPath) {
-        ReportGenerator reportGenerator = ReportGeneratorFactory.getReportGenerator(format);
-        reportGenerator.generateReport(data, outputPath);
+    public void generateReport() {
+        Map<String, Long> uniqueCustomerCountByContract = getUniqueCustomerCountByContract();
+        Map<String, Long> uniqueCustomerCountByGeoZone = getUniqueCustomerCountByGeoZone();
+        Map<String, Double> averageBuildDurationByGeoZone = getAverageBuildDurationByGeoZone();
+        Map<String, Set<String>> uniqueCustomersByGeoZone = getUniqueCustomersByGeoZone();
+
+        System.out.println("Unique Customer Count by Contract: " + uniqueCustomerCountByContract);
+        System.out.println("Unique Customer Count by GeoZone: " + uniqueCustomerCountByGeoZone);
+        System.out.println("Average Build Duration by GeoZone: " + averageBuildDurationByGeoZone);
+        System.out.println("Unique Customers by GeoZone: " + uniqueCustomersByGeoZone);
+
+        ReportGenerator reportGenerator = ReportGeneratorFactory.getReportGenerator("text");
+        reportGenerator.generateReport(uniqueCustomerCountByGeoZone, FILE_OUT_PATH);
     }
 }

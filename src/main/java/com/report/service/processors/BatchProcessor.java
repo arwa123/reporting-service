@@ -8,14 +8,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.*;
 
 public class BatchProcessor {
     private static final int BATCH_SIZE = 1000;
     private static final int THREAD_POOL_SIZE = 10;
-    private static final String FILE_PATH = "/Users/asaify/Documents/my-workspace/reporting-service/src/main/resources/";
     ReportService reportService = ReportService.getInstance();
 
     public interface BatchHandler {
@@ -23,8 +20,8 @@ public class BatchProcessor {
     }
 
 
-    public void startProcess() throws IOException {
-        String file = FILE_PATH.concat("input.txt");
+    public void startProcess(String file) throws IOException {
+
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
         try {
@@ -36,7 +33,7 @@ public class BatchProcessor {
                     e.printStackTrace();
                 }
             });
-            generateReport();
+            reportService.generateReport();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -69,19 +66,5 @@ public class BatchProcessor {
                 handler.handleBatch(batch);
             }
         }
-    }
-
-    public void generateReport() {
-        Map<String, Long> uniqueCustomerCountByContract = reportService.getUniqueCustomerCountByContract();
-        Map<String, Long> uniqueCustomerCountByGeoZone = reportService.getUniqueCustomerCountByGeoZone();
-        Map<String, Double> averageBuildDurationByGeoZone = reportService.getAverageBuildDurationByGeoZone();
-        Map<String, Set<String>> uniqueCustomersByGeoZone = reportService.getUniqueCustomersByGeoZone();
-
-        System.out.println("Unique Customer Count by Contract: " + uniqueCustomerCountByContract);
-        System.out.println("Unique Customer Count by GeoZone: " + uniqueCustomerCountByGeoZone);
-        System.out.println("Average Build Duration by GeoZone: " + averageBuildDurationByGeoZone);
-        System.out.println("Unique Customers by GeoZone: " + uniqueCustomersByGeoZone);
-
-        reportService.generateReport("text", uniqueCustomerCountByGeoZone, FILE_PATH);
     }
 }
