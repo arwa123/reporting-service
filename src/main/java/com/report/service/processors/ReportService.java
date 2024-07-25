@@ -49,7 +49,7 @@ public class ReportService {
 
     public Map<String, Double> getAverageBuildDurationByGeoZone() {
         return buildDurationByGeoZone.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().stream().mapToInt(Integer::intValue).average().orElse(0.0)));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().stream().collect(Collectors.averagingDouble(f -> f))));
     }
 
     public Map<String, Set<String>> getUniqueCustomersByGeoZone() {
