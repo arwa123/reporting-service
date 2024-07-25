@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.concurrent.*;
 
 public class BatchProcessor {
-    private static final int BATCH_SIZE = 10;
+    private static final int BATCH_SIZE = 1000;
     private static final int THREAD_POOL_SIZE = 10;
     private static final String FILE_PATH = "/Users/asaify/Documents/my-workspace/reporting-service/src/main/resources/";
 
