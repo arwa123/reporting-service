@@ -1,4 +1,4 @@
-package generators;
+package com.report.service.generators;
 
 import com.report.service.generators.*;
 import org.junit.jupiter.api.Test;
