@@ -1,6 +1,6 @@
-package com.report.service.mapper;
+package com.report.service.mappers;
 
-import com.report.service.model.Building;
+import com.report.service.models.Building;
 
 public class BuildInfoParser {
     public Building parseLine(String line) {

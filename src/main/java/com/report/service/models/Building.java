@@ -1,4 +1,4 @@
-package com.report.service.model;
+package com.report.service.models;
 
 public class Building {
     private final String customerId;
@@ -8,7 +8,7 @@ public class Building {
     private final String projectCode;
     private final int buildDuration;
 
-    private Building(Builder builder) {
+    public Building(Builder builder) {
         this.customerId = builder.customerId;
         this.contractId = builder.contractId;
         this.geoZone = builder.geoZone;

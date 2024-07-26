@@ -1,8 +1,9 @@
 package com.report.service.processors;
 
+import com.report.service.constants.Constants;
 import com.report.service.generators.ReportGenerator;
 import com.report.service.generators.ReportGeneratorFactory;
-import com.report.service.model.Building;
+import com.report.service.models.Building;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,8 +12,6 @@ import java.util.stream.Collectors;
 
 public class ReportService {
     private static ReportService instance;
-    private static final String FILE_OUT_PATH = "/Users/asaify/Documents/my-workspace/reporting-service/src/main/resources/";
-
     private ConcurrentMap<String, Set<String>> customerCountByContract = new ConcurrentHashMap<>();
     private ConcurrentMap<String, Set<String>> customerCountByGeoZone = new ConcurrentHashMap<>();
     private ConcurrentMap<String, List<Integer>> buildDurationByGeoZone = new ConcurrentHashMap<>();
@@ -71,6 +70,6 @@ public class ReportService {
         System.out.println("Unique Customers by GeoZone: " + uniqueCustomersByGeoZone);
 
         ReportGenerator reportGenerator = ReportGeneratorFactory.getReportGenerator("text");
-        reportGenerator.generateReport(uniqueCustomerCountByGeoZone, FILE_OUT_PATH);
+        reportGenerator.generateReport(uniqueCustomerCountByGeoZone, System.getProperty("user.dir").concat(Constants.RESOURCE_PATH));
     }
 }

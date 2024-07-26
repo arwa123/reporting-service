@@ -1,7 +1,7 @@
 package com.report.service.processors;
 
-import com.report.service.mapper.BuildInfoParser;
-import com.report.service.model.Building;
+import com.report.service.mappers.BuildInfoParser;
+import com.report.service.models.Building;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
