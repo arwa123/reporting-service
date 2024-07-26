@@ -1,6 +1,5 @@
 package com.report.service.generators;
 
-import com.report.service.generators.TextReportGenerator;
 import org.junit.jupiter.api.Test;
 import java.io.BufferedWriter;
 import java.io.IOException;

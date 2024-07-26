@@ -71,8 +71,6 @@ class BatchProcessorTest {
         List<Building> capturedBatch = batchCaptor.getValue();
         assertEquals(1, capturedBatch.size());
         assertEquals("contract1", capturedBatch.get(0).getContractId());
-
-        // Verify that reportService.generateReport() was called
         verify(mockReportService, times(1)).generateReport();
     }
 
