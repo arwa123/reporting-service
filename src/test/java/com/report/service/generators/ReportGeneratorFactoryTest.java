@@ -7,25 +7,25 @@ class ReportGeneratorFactoryTest {
 
     @Test
     void testGetReportGeneratorForExcel() {
-        ReportGenerator generator = ReportGeneratorFactory.getReportGenerator("excel");
+        IReportGenerator generator = ReportGeneratorFactory.getReportGenerator("excel");
         assertTrue(generator instanceof ExcelReportGenerator);
     }
 
     @Test
     void testGetReportGeneratorForPdf() {
-        ReportGenerator generator = ReportGeneratorFactory.getReportGenerator("pdf");
+        IReportGenerator generator = ReportGeneratorFactory.getReportGenerator("pdf");
         assertTrue(generator instanceof PdfReportGenerator);
     }
 
     @Test
     void testGetReportGeneratorForWord() {
-        ReportGenerator generator = ReportGeneratorFactory.getReportGenerator("word");
+        IReportGenerator generator = ReportGeneratorFactory.getReportGenerator("word");
         assertTrue(generator instanceof WordReportGenerator);
     }
 
     @Test
     void testGetReportGeneratorForText() {
-        ReportGenerator generator = ReportGeneratorFactory.getReportGenerator("text");
+        IReportGenerator generator = ReportGeneratorFactory.getReportGenerator("text");
         assertTrue(generator instanceof TextReportGenerator);
     }
 
@@ -39,7 +39,7 @@ class ReportGeneratorFactoryTest {
 
     @Test
     void testGetReportGeneratorCaseInsensitive() {
-        ReportGenerator generator = ReportGeneratorFactory.getReportGenerator("TeXt");
+        IReportGenerator generator = ReportGeneratorFactory.getReportGenerator("TeXt");
         assertTrue(generator instanceof TextReportGenerator);
     }
 }

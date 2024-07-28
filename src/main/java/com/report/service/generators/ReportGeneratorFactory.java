@@ -1,7 +1,7 @@
 package com.report.service.generators;
 
 public class ReportGeneratorFactory {
-    public static ReportGenerator getReportGenerator(String format) {
+    public static IReportGenerator getReportGenerator(String format) {
         switch (format.toLowerCase()) {
             case "excel":
                 return new ExcelReportGenerator();

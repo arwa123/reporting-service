@@ -3,7 +3,6 @@ package com.report.service.services;
 import com.report.service.models.Building;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;

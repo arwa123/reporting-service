@@ -1,47 +1,29 @@
 package com.report.service.generators;
 
+import com.report.service.constants.Constants;
 import org.junit.jupiter.api.Test;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.HashMap;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TextReportGeneratorTest {
 
     @Test
     void testGenerateReport() throws IOException {
-        Map<String, Integer> data = new HashMap<>();
-        data.put("geo1", 10);
-        data.put("geo2", 20);
-
-        BufferedWriter mockWriter = mock(BufferedWriter.class);
-
-        TextReportGenerator reportGenerator = new TextReportGenerator() {
-            @Override
-            public void generateReport(Map<String, ?> data, String filePath) {
-                try {
-                    String fileName = "output.txt";
-                    try (BufferedWriter writer = mockWriter) {
-                        writer.write("Report" + "\n");
-                        writer.write("--------------\n");
-                        writer.write("GEO-ZONE" + ": " + "Customers" + "\n");
-                        for (Map.Entry<String, ?> entry : data.entrySet()) {
-                            writer.write(entry.getKey() + ": " + entry.getValue() + "\n");
-                        }
-                        System.out.println("Text report generated successfully.");
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        reportGenerator.generateReport(data, "");
-        verify(mockWriter).write("Report\n");
-        verify(mockWriter).write("--------------\n");
-        verify(mockWriter).write("GEO-ZONE: Customers\n");
-        verify(mockWriter).write("geo1: 10\n");
-        verify(mockWriter).write("geo2: 20\n");
-        verify(mockWriter).close();
+        Map<String, String> data = new LinkedHashMap<>();
+        data.put("zone1", "5");
+        data.put("zone2", "10");
+        TextReportGenerator textReportGenerator = new TextReportGenerator();
+        String filePath = System.getProperty("user.dir").concat(Constants.TEST_RESOURCE_PATH);
+        String fileName = "output.txt";
+        Path outputPath = Paths.get(filePath + fileName);
+        textReportGenerator.generateReport(data, filePath);
+        String expectedContent = "Report\n--------------\nGEO-ZONE: Customers\nzone1: 5\nzone2: 10\n";
+        String actualContent = Files.readString(outputPath);
+        assertEquals(expectedContent, actualContent);
     }
 }

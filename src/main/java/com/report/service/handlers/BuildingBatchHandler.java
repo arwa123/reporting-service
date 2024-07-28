@@ -13,11 +13,14 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BuildingBatchHandler extends BatchHandler {
 
     private final ExecutorService executorService;
     private final BuildingBatchService buildingBatchService;
+    private static final Logger logger = Logger.getLogger(BuildingBatchHandler.class.getName());
 
     public BuildingBatchHandler(ExecutorService executorService, BuildingBatchService buildingBatchService) {
         this.executorService = executorService;
@@ -30,13 +33,14 @@ public class BuildingBatchHandler extends BatchHandler {
         try {
             future.get();  // Wait for the batch processing to complete
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING,"Error occurred while processing batch  "+e.getMessage());
         }
     }
 
     @Override
-    public void processFile(String filePath) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+    public void processFile(String filePath) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line;
             List<Building> batch = new ArrayList<>();
             BuildInfoParser parser = new BuildInfoParser();
@@ -54,6 +58,8 @@ public class BuildingBatchHandler extends BatchHandler {
             if (!batch.isEmpty()) {
                 handleBatch(batch);
             }
+        } catch (IOException e) {
+            logger.log(Level.WARNING,"Error occurred while file parsing "+e.getMessage());
         }
     }
 

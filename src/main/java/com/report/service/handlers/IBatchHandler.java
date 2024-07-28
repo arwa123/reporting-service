@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IBatchHandler {
-    void processFile(String filePath) throws IOException;
+    void processFile(String filePath);
     void handleBatch(List<Building> batch);
     void generateReport();
 }

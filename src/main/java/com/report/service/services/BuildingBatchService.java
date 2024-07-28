@@ -1,7 +1,7 @@
 package com.report.service.services;
 
 import com.report.service.constants.Constants;
-import com.report.service.generators.ReportGenerator;
+import com.report.service.generators.IReportGenerator;
 import com.report.service.generators.ReportGeneratorFactory;
 import com.report.service.models.Building;
 
@@ -69,7 +69,7 @@ public class BuildingBatchService {
         System.out.println("Average Build Duration by GeoZone: " + averageBuildDurationByGeoZone);
         System.out.println("Unique Customers by GeoZone: " + uniqueCustomersByGeoZone);
 
-        ReportGenerator reportGenerator = ReportGeneratorFactory.getReportGenerator("text");
+        IReportGenerator reportGenerator = ReportGeneratorFactory.getReportGenerator("text");
         reportGenerator.generateReport(uniqueCustomerCountByGeoZone, System.getProperty("user.dir").concat(Constants.RESOURCE_PATH));
     }
 }
