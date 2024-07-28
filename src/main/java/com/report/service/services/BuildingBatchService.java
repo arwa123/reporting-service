@@ -1,4 +1,4 @@
-package com.report.service.processors;
+package com.report.service.services;
 
 import com.report.service.constants.Constants;
 import com.report.service.generators.ReportGenerator;
@@ -10,20 +10,20 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-public class ReportService {
-    private static ReportService instance;
+public class BuildingBatchService {
+    private static BuildingBatchService instance;
     private ConcurrentMap<String, Set<String>> customerCountByContract = new ConcurrentHashMap<>();
     private ConcurrentMap<String, Set<String>> customerCountByGeoZone = new ConcurrentHashMap<>();
     private ConcurrentMap<String, List<Integer>> buildDurationByGeoZone = new ConcurrentHashMap<>();
 
-    private ReportService() {
+    private BuildingBatchService() {
     }
 
-    public static ReportService getInstance() {
+    public static BuildingBatchService getInstance() {
         if (instance == null) {
-            synchronized (ReportService.class) {
+            synchronized (BuildingBatchService.class) {
                 if (instance == null) {
-                    instance = new ReportService();
+                    instance = new BuildingBatchService();
                 }
             }
         }

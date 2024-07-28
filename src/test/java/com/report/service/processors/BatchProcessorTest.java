@@ -1,95 +1,66 @@
 package com.report.service.processors;
-import com.report.service.mappers.BuildInfoParser;
-import com.report.service.models.Building;
+import com.report.service.handlers.BatchFactory;
+import com.report.service.handlers.IBatchHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-
-import java.io.BufferedReader;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.concurrent.ExecutorService;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import org.mockito.MockedStatic;
 
-class BatchProcessorTest {
 
+public class BatchProcessorTest {
+
+    @Mock
+    private ExecutorService executorService;
+
+    @Mock
+    private IBatchHandler batchHandler;
+
+    @InjectMocks
     private BatchProcessor batchProcessor;
-    private ReportService mockReportService;
-    private BuildInfoParser mockParser;
 
     @BeforeEach
-    void setUp() {
-        mockReportService = mock(ReportService.class);
-        mockParser = mock(BuildInfoParser.class);
-        batchProcessor = new BatchProcessor() {
-            @Override
-            public void processFile(String filePath, BatchHandler handler) throws IOException {
-                Building.Builder builder1 = new Building.Builder();
-                builder1.withBuildDuration(5).withContractId("contract1")
-                        .withGeoZone("geo1").withTeamCode("BlueTeam")
-                        .withCustomerId("customer1").build();
-                Building building = new Building(builder1);
-                List<Building> buildings = Arrays.asList(building);
-                handler.handleBatch(buildings);
-            }
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
 
-            // Helper method to set a custom BufferedReader for testing
-            public void processFile(BufferedReader reader, BatchHandler handler) throws IOException {
-                String line;
-                List<Building> batch = new ArrayList<>();
-                BuildInfoParser parser = new BuildInfoParser();
-
-                while ((line = reader.readLine()) != null) {
-                    Building building = parser.parseLine(line);
-                    batch.add(building);
-
-                    if (batch.size() >= 10) {
-                        handler.handleBatch(batch);
-                        batch.clear();
-                    }
-                }
-
-                if (!batch.isEmpty()) {
-                    handler.handleBatch(batch);
-                }
-            }
-        };
-        batchProcessor.reportService = mockReportService;
     }
 
     @Test
-    void testStartProcess() throws IOException {
-        String mockFile = "mockfile.txt";
+    public void testStartProcess() throws IOException {
+        String file = "testFilePath";
+        String batchType = "building";
 
-        batchProcessor.startProcess(mockFile);
+        try (MockedStatic<BatchFactory> batchFactoryMockedStatic = mockStatic(BatchFactory.class)) {
+            batchFactoryMockedStatic.when(() -> BatchFactory.getBatchHandler(any(ExecutorService.class), eq(batchType)))
+                    .thenReturn(batchHandler);
 
-        // Verify that the reportService.processBatch() was called with the correct arguments
-        ArgumentCaptor<List<Building>> batchCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockReportService, times(1)).processBatch(batchCaptor.capture());
-        List<Building> capturedBatch = batchCaptor.getValue();
-        assertEquals(1, capturedBatch.size());
-        assertEquals("contract1", capturedBatch.get(0).getContractId());
-        verify(mockReportService, times(1)).generateReport();
+            batchProcessor.startProcess(file, batchType);
+
+            verify(batchHandler).processFile(file);
+            verify(batchHandler).generateReport();
+        }
     }
 
     @Test
-    void testProcessFile() throws IOException {
-        BatchProcessor.BatchHandler mockHandler = mock(BatchProcessor.BatchHandler.class);
-        BufferedReader reader = mock(BufferedReader.class);
+    public void testStartProcessWithIOException() throws IOException {
+        String file = "testFilePath";
+        String batchType = "building";
 
-        when(reader.readLine()).thenReturn(
-                "contract1,geo1,customer1,5",
-                "contract1,geo1,customer2,10",
-                null
-        );
+        try (MockedStatic<BatchFactory> batchFactoryMockedStatic = mockStatic(BatchFactory.class)) {
+            batchFactoryMockedStatic.when(() -> BatchFactory.getBatchHandler(any(ExecutorService.class), eq(batchType)))
+                    .thenReturn(batchHandler);
 
-        batchProcessor.processFile("dummy", mockHandler);
-        ArgumentCaptor<List<Building>> batchCaptor = ArgumentCaptor.forClass(List.class);
-        verify(mockHandler, times(1)).handleBatch(batchCaptor.capture());
-        List<Building> capturedBatch = batchCaptor.getValue();
-        assertEquals(1, capturedBatch.size());
-        assertEquals("contract1", capturedBatch.get(0).getContractId());
+            doThrow(new IOException("IO Exception")).when(batchHandler).processFile(file);
+
+            batchProcessor.startProcess(file, batchType);
+
+            verify(batchHandler).processFile(file);
+            verify(batchHandler, never()).generateReport();
+        }
     }
 }

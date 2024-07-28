@@ -1,5 +1,7 @@
 package com.report.service.generators;
 
+import com.report.service.constants.Constants;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,7 +11,7 @@ public class TextReportGenerator implements ReportGenerator {
 
     @Override
     public void generateReport(Map<String, ?> data, String filePath) {
-        String fileName = "output.txt";
+        String fileName = Constants.OUTPUT_FILE_NAME;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath+fileName))) {
             writer.write("Report" + "\n");
             writer.write("--------------\n");
